@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.w3c.dom.Element;
 
+import elementos.Coordenada;
 import elementos.ElementType;
 
 public class Juego {
