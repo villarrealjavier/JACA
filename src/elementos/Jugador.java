@@ -3,6 +3,8 @@ package elementos;
 
 import java.util.Random;
 
+import logicaJuego.Constantes;
+
 public class Jugador extends Element{
 	//ATRIBUTOS
 	private int dinero;
@@ -113,6 +115,71 @@ public class Jugador extends Element{
 		this.gemas++;
 	}
 	
-	//METODO LUCHA
+	/**
+	 * Metodo que se lleva a cabo a la hora de realizar la lucha entre los dos oponentes, si ambos tienen la 
+	 * misma fuerza, quedará empate.
+	 * Si el jugador1 posee mas fuerza que el jugador2, pero este posee pocimas, gana y se le disminuye 1 pocion,
+	 * Si el rival, es decir, jugador2 posee dinero, ganará, si no tiene nada, ganará jugador 1.
+	 * Si jugador 2 posee más fuerza que jugador 1, pasará lo mismo pero al contrario,es decir, con el jugador1.
+	 * 
+	 * @param rival
+	 * @return resultado, valor del enumerado.
+	 */
+	public int lucha(Jugador rival) {
+	int resultado;
+	int fuerzaJ = this.getFuerzaParaLuchar();
+	int fuerzaRival= rival.getFuerzaParaLuchar();
+		if (fuerzaJ==fuerzaRival) {
+			resultado=Constantes.EMPATE;
+			
+		}else if (fuerzaJ> fuerzaRival) {
+			if (rival.getPociones() > 0) {
+				rival.pociones--;
+				resultado= Constantes.GANA_USA_POCIMA; //Gana el jugador y se utiliza pocima del enemigo para que no muera
+				
+			}else if (rival.getDinero()>0) {
+				this.dinero+= rival.dinero;
+				rival.dinero=0;
+				resultado= Constantes.GANA_DINERO; //Gana el jugador y se lleva todo el dinero del enemigo
+			}else {
+				resultado=Constantes.GANA_MUERE; //Gana el jugador y el enemigo muer
+				
+			}
+		}else {
+			if (pociones>0) {
+				pociones--;
+				resultado=Constantes.PIERDE_USA_POCIMA; //Gana el enemigo y se utiliza pocima del jugador para que no muera
+				
+			}else if (dinero>0 ){
+				rival.dinero+=this.dinero;
+				this.dinero=0;
+				resultado=Constantes.PIERDE_DINERO; //Gana el enemigo y se lleva todo el dinero del jugador
+				
+			}else {
+				resultado= Constantes.PIERDE_MUERE; //Gana el enemigo y el jugador muere
+			}
+		}
+		return resultado;
+	}
+	/**
+	 * Metodo realizado para cuando el jugador se encuentra una roca, si el jugador posee gema, puede romper
+	 * la roca con la gema y se le disminuye una gema al jugador. Si el jugador no posee gemas pero por el contrario
+	 * tiene más de 4 de magia le gana a la roca, si esto no se cumple, el jugador  pierde.
+	 * @return Devuelve  el resultado con el valor del enumerado.
+	 */
+	public int encuentraRoca() {
+	int resultado;
+		if(this.gemas>0) {
+			resultado=Constantes.ROMPE_ROCA_CON_GEMA; //Rompe roca
+			this.gemas--;
+		}else {
+			if (this.getMagia()>4) {
+				resultado=Constantes.GANA_A_LA_ROCA; //Le gana a la roca
+			}else {
+				resultado=Constantes.PIERDE_A_LA_ROCA; //Pierde con la roca
+			}
+		}
+		return resultado;
+	}
 	
 }

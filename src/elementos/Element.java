@@ -14,7 +14,7 @@ public class Element {
 
 	//GETTER
 	public ElementType getType() {
-		return elemento;
+	    return elemento;
 	}
 
 	//HASHCODE

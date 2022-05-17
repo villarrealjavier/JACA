@@ -3,10 +3,12 @@ package logicaJuego;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.w3c.dom.Element;
-
 import elementos.Coordenada;
+import elementos.Element;
 import elementos.ElementType;
+import elementos.Jugador;
+import elementos.JugadorException;
+import elementos.PlayerType;
 
 public class Juego {
 
@@ -15,10 +17,71 @@ public class Juego {
 	private int jugadorJuega;
 	private int dado; // Dado para ver los movimientos del jugador que juega
 
-
 	/**
-	 * Escribe el tablero en formato no gr谩fico. Devuelve el string con la
-	 * informaci贸n
+	 * Metodo para crear roca, el numero de rocas esta limitado por la constante NUM_ROCAS, para ello 
+	 * creamos un elemento y una coordenada en la cual en el tablero comprobamos que el valor clave, es null
+	 * si este es el null, le ponemos la coordenada creada y el elemento e incrementamos el contador, hasta que 
+	 * el contador sea mayor que el limite.
+	 * 
+	 */
+	private void crearRocas() {
+		int contador = 0;
+		while (contador < Constantes.NUM_ROCAS) {
+			Coordenada coor1 = new Coordenada();
+			Element e = new Element(ElementType.ROCA);
+			if (tablero.get(coor1) == null) {
+				this.tablero.put(coor1, e);
+				contador++;
+			}
+
+		}
+	}
+	/**
+	 * Metodo para crear gemas, el numero de rocas esta limitado por la constante NUM_GEMAS, para ello 
+	 * creamos un elemento y una coordenada en la cual en el tablero comprobamos que el valor clave, es null
+	 * si este es el null, le ponemos la coordenada creada y el elemento e incrementamos el contador, hasta que 
+	 * el contador sea mayor que el limite.
+	 * 
+	 */
+	private void crearGemas() {
+		int contador = 0;
+		while (contador < Constantes.NUM_GEMAS) {
+			Coordenada coor1 = new Coordenada();
+			Element e = new Element(ElementType.GEMA);
+			if (tablero.get(coor1) == null) {
+				this.tablero.put(coor1, e);
+				contador++;
+			}
+
+		}
+	}
+	/**
+	 * Metodo para crear pociones, el numero de rocas esta limitado por la constante NUM_POCIONES, para ello 
+	 * creamos un elemento y una coordenada en la cual en el tablero comprobamos que el valor clave, es null
+	 * si este es el null, le ponemos la coordenada creada y el elemento e incrementamos el contador, hasta que 
+	 * el contador sea mayor que el limite.
+	 * 
+	 */
+	private void crearPociones() {
+		int contador = 0;
+		while (contador < Constantes.NUM_POCIONES) {
+			Coordenada coor1 = new Coordenada();
+			Element e = new Element(ElementType.POCION);
+			if (tablero.get(coor1) == null) {
+				this.tablero.put(coor1, e);
+				contador++;
+			}
+
+		}
+	}
+	
+
+
+
+	
+	/**
+	 * Escribe el tablero en formato no gr醘ico. Devuelve el string con la
+	 * informaci髇
 	 */
 	@Override
 	public String toString() {
@@ -72,7 +135,7 @@ public class Juego {
 	 * @throws JugadorException
 	 */
 	public String movePlayer(char direction) throws JuegoException, JugadorException {
-		// Si no es una direcci贸n v谩lida, mando un exception
+		// Si no es una direcci髇 v醠ida, mando un exception
 		String resul = "";
 		Jugador jugador = (Jugador) this.tablero.get(this.coordenadaJugadores.get(jugadorJuega));
 
@@ -91,7 +154,7 @@ public class Juego {
 					resul = "Empate entre los jugadore";
 					break;
 				case Constantes.GANA_USA_POCIMA:
-					resul = "El jugador " + jugador.getNombre() + " gana. Le quita una p贸cima al enemigo";
+					resul = "El jugador " + jugador.getNombre() + " gana. Le quita una p骳ima al enemigo";
 					break;
 				case Constantes.GANA_DINERO:
 					resul = "El jugador " + jugador.getNombre() + " gana. Le quita el dinero al enemigo";
@@ -103,7 +166,7 @@ public class Juego {
 					// tirando
 					break;
 				case Constantes.PIERDE_USA_POCIMA:
-					resul = "El enemigo " + enemigo.getNombre() + " gana. Le quita una p贸cima al jugador";
+					resul = "El enemigo " + enemigo.getNombre() + " gana. Le quita una p骳ima al jugador";
 					break;
 				case Constantes.PIERDE_DINERO:
 					resul = "El enemigo " + enemigo.getNombre() + " gana. Le quita el dinero al jugador";
@@ -118,7 +181,7 @@ public class Juego {
 					this.jugadorJuega--;
 					break;
 				}
-				// Despu茅s de la lucha los jugadores no se mueven
+				// Despu閟 de la lucha los jugadores no se mueven
 			} else if (elemento.getType() == ElementType.ROCA) {
 				int resultadoRoca = jugador.encuentraRoca();
 				switch (resultadoRoca) {
