@@ -13,10 +13,44 @@ import elementos.PlayerType;
 public class Juego {
 
 	private HashMap<Coordenada, Element> tablero;
-	private ArrayList<Coordenada> coordenadaJugadores;
+	private ArrayList<Coordenada> coordenadaPlayers;
 	private int jugadorJuega;
-	private int dado; // Dado para ver los movimientos del jugador que juega
+	private int dado;
 
+	
+	
+	/**
+	 * Metodo para crear a un jugador en el cual se le introduce por paramtero el tipo que es y a la hora de crearlo
+	 * compruebo que la coordenada no este ocupada, si esta no lo está, lo creo
+	 * @param tipo
+	 * @return Devuelve un tipo booleano, el cual define si se ha podido crear o no.
+	 */
+	private boolean crearJugador(PlayerType tipo) {
+		boolean crear = false;
+		Jugador jugador = new Jugador(tipo);
+		Coordenada coordenada = new Coordenada();
+		while (coordenadaPlayers.contains(coordenada)) {
+			coordenada = new Coordenada();
+		}
+		coordenadaPlayers.add(coordenada);
+		tablero.put(coordenada, jugador);
+		crear = true;
+		return crear;
+	}
+	
+	
+	/**
+	 * Creo el tablero al cual lo unico que hago es llamar a los demás metodos los cuales van a asignar tanto rocas, como gemas,etc
+	 * en las coordenadas del tablero, para de esta manera tenerlo con todos los elementos creados.
+	 * 
+	 */
+	private void crearTablero() {
+		crearDinero();
+		crearGemas();
+		crearPociones();
+		crearRocas();
+	}
+	
 	/**
 	 * Metodo para crear roca, el numero de rocas esta limitado por la constante NUM_ROCAS, para ello 
 	 * creamos un elemento y una coordenada en la cual en el tablero comprobamos que el valor clave, es null
@@ -36,6 +70,24 @@ public class Juego {
 
 		}
 	}
+	/**
+	 * Metodo para crear dinero, hago un bucle en el cual incremento un contador, creo una coordenada y un elemento, 
+	 * y si la coordenada obtenida mediante el get es null, la añado, si no, pues aumento el contador;
+	 */
+	private void crearDinero() {
+		int contador = 0;
+		while (contador < Constantes.NUM_DINERO) {
+			Coordenada coordenada = new Coordenada();
+			Element elemento = new Element(ElementType.DINERO);
+			if (tablero.get(coordenada) == null) {
+				this.tablero.put(coordenada, elemento);
+				contador++;
+			}
+
+		}
+
+	}
+	
 	/**
 	 * Metodo para crear gemas, el numero de rocas esta limitado por la constante NUM_GEMAS, para ello 
 	 * creamos un elemento y una coordenada en la cual en el tablero comprobamos que el valor clave, es null
@@ -137,7 +189,7 @@ public class Juego {
 	public String movePlayer(char direction) throws JuegoException, JugadorException {
 		// Si no es una dirección válida, mando un exception
 		String resul = "";
-		Jugador jugador = (Jugador) this.tablero.get(this.coordenadaJugadores.get(jugadorJuega));
+		Jugador jugador = (Jugador) this.tablero.get(this.coordenadaPlayers.get(jugadorJuega));
 
 		Coordenada coordDestino = getNextPosition(direction);
 
@@ -173,7 +225,7 @@ public class Juego {
 					break;
 				case Constantes.PIERDE_MUERE:
 					resul = "El enemigo " + enemigo.getNombre() + " gana. El jugador muere";
-					this.eliminarJugador(this.coordenadaJugadores.get(jugadorJuega));
+					this.eliminarJugador(this.coordenadaPlayers.get(jugadorJuega));
 					dado = 0;
 					// Decrementamos en uno el jugador, para que no se salte al siguiente
 					// ya que al borrarlo el siguiente apunta al siguiente, y al incrementarlo
