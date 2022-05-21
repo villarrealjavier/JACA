@@ -93,7 +93,7 @@ public class Coordenada {
 	}
 	
 	@Override
-	protected Coordenada clone() throws CloneNotSupportedException {
+	public Coordenada clone() throws CloneNotSupportedException {
 		return new Coordenada(this.x,this.y);
 	}
 	
