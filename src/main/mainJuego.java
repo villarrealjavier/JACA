@@ -54,7 +54,7 @@ public class mainJuego {
 			
 			System.out.println(juego);
 			System.out.println(juego.imprimeNombreJugadores());
-			System.out.println(juego.imprimeValoreJugadores());
+			System.out.println(juego.imprimeValoresJugadores());
 			while (!juego.isTerminado()) {
 				/*********************
 				 * Dado. Hay que revisarlo
@@ -62,7 +62,7 @@ public class mainJuego {
 				juego.setDado();
 				// Muestra la información
 				//System.out.println(juego.setInformacion());
-				System.out.println("Le toca al jugador " + juego.getNombreJuegadorQueJuega() + ". El dado saca " + juego.getValorDado() + " movimientos");
+				System.out.println("Le toca al jugador " + juego.getNombreJugadorQueJuega() + ". El dado saca " + juego.getValorDado() + " movimientos");
 				for (int i = 0; i < juego.getValorDado() && !juego.isTerminado(); i++) {
 					
 					char direccion;
@@ -75,7 +75,7 @@ public class mainJuego {
 					
 					
 					System.out.println(juego);
-					System.out.println(juego.imprimeValoreJugadores());
+					System.out.println(juego.imprimeValoresJugadores());
 
 				}
 				juego.proximoJugador();
